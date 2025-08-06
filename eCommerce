@@ -1,0 +1,123 @@
+import os
+from zipfile import ZipFile
+import pandas as pd
+from kaggle.api.kaggle_api_extended import KaggleApi
+import matplotlib.pyplot as plt
+import seaborn as sns
+import kaggle
+'''
+
+api=KaggleApi()
+api.authenticate()
+api.dataset_download_files('sahilislam007/sales-dataset', path='sales_data', unzip=True)
+'''
+df=pd.read_csv("Sales Dataset.csv")
+'''
+print(df.head())
+print("rozmiar")
+print(df.shape)
+print("info")
+print(df.info())
+print("Podstawowe statystki")
+print(df.describe())
+print("liczba Null")
+print(df.isnull().sum())
+'''
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+
+def set_full_dark_theme():
+
+    sns.set(style="darkgrid")
+    plt.rcParams['figure.facecolor'] = '#4C4C4C'
+    plt.rcParams['axes.facecolor'] = '#4C4C4C'
+    plt.rcParams['savefig.facecolor'] = '#4C4C4C'
+    plt.rcParams['axes.edgecolor'] = 'white'
+    plt.rcParams['axes.labelcolor'] = 'white'
+    plt.rcParams['xtick.color'] = 'white'
+    plt.rcParams['ytick.color'] = 'white'
+    plt.rcParams['text.color'] = 'white'
+    plt.rcParams['legend.facecolor'] = '#4C4C4C'
+    plt.rcParams['legend.edgecolor'] = 'white'
+    plt.rcParams['grid.color'] = 'gray'
+
+
+
+set_full_dark_theme()
+
+plt.figure()
+sns.countplot(data=df,x='Product Category',order=df['Product Category'].value_counts().index)
+plt.title("Najczesciej sprzedawany produkt")
+plt.show()
+
+plt.figure()
+sns.barplot(x='Product Category',y='Total Amount',ci=None,data=df,estimator=sum,order=df.groupby('Product Category')['Total Amount'].sum().sort_values(ascending=False).index)
+plt.title("Łączna wartość sprzedaży wg kategorii produktu")
+plt.show()
+
+df['Date']=pd.to_datetime(df['Date'])
+df['Month_Year']=df['Date'].dt.to_period('M')
+
+monthly_sales = df.groupby('Month_Year')['Total Amount'].sum().reset_index()
+plt.figure(figsize=(12, 6))
+sns.barplot(data=monthly_sales, x='Month_Year', y='Total Amount')
+plt.xticks(rotation=45)
+plt.title('Sprzedaż miesięczna')
+plt.show()
+
+plt.figure()
+sns.countplot(data=df,x='Product Category', hue='Gender')
+plt.title("Liczba transankcji wg plci i kategorii produktu")
+plt.show()
+
+plt.figure()
+sns.boxplot(data=df,x='Product Category',y='Age')
+plt.title('Rozklad wieku wedlug klientow wedlug kategorii produktu')
+plt.show()
+
+df['Date'] = pd.to_datetime(df['Date'])
+df['Month'] = df['Date'].dt.strftime('%B')
+df['Month_Num'] = df['Date'].dt.month
+df = df.sort_values('Month_Num')
+
+monthly_sales = df.groupby(['Month', 'Product Category'])['Total Amount'].sum().reset_index()
+
+
+monthly_sales['Month'] = pd.Categorical(
+    monthly_sales['Month'],
+    categories = [
+    'January',
+    'February',
+    'March',
+    'April',
+    'May',
+    'June',
+    'July',
+    'August',
+    'September',
+    'October',
+    'November',
+    'December'
+],
+
+    ordered=True
+)
+monthly_sales = monthly_sales.sort_values(['Month', 'Total Amount'], ascending=[True, False])
+
+plt.figure(figsize=(14, 8))
+sns.barplot(
+    data=monthly_sales,
+    x='Month',
+    y='Total Amount',
+    hue='Product Category',
+    palette='Set2',
+    errorbar=None
+)
+plt.title("Sprzedaż wg kategorii produktów w podziale na miesiące", fontsize=16)
+plt.xlabel("Miesiąc")
+plt.ylabel("Suma sprzedaży")
+plt.legend(title='Kategoria')
+plt.xticks(rotation=45)
+plt.tight_layout()
+plt.show()
