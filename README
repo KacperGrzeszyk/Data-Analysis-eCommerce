@@ -1,0 +1,34 @@
+Project Description: Sales Data Analysis and Visualization
+
+This project aims to perform exploratory data analysis and visualization of a retail sales dataset. The data comes from a public dataset available on the Kaggle platform and contains transaction details such as purchase date, product category, customer gender and age, and total sales amount.
+
+Main goals of the project:
+- Investigate the most frequently sold product categories.
+- Analyze sales value broken down by product categories.
+- Track monthly sales trends.
+- Analyze the number of transactions by customer gender and product category.
+- Examine the age distribution of customers across different product categories.
+- Present monthly sales broken down by product categories.
+
+Technologies and libraries used:
+- Python with libraries: pandas, matplotlib, seaborn
+- Kaggle API for downloading and extracting data
+- Seaborn with a custom dark theme applied to the plots for better readability
+
+Functionality:
+- Downloading and loading data from a CSV file.
+- Processing dates and creating new helper columns (e.g., month, year).
+- Grouping data and summing sales amounts by different dimensions.
+- Creating various charts such as bar plots, boxplots, and category/gender breakdowns.
+- Applying a custom dark theme to charts for improved aesthetics and clarity.
+
+Visualizations included:
+- Most frequently sold products.
+- Total sales value by product category.
+- Monthly sales amounts.
+- Number of transactions by gender and product category.
+- Age distribution of customers by product category.
+- Monthly sales split by product categories.
+
+Summary:
+This project provides insights into customer purchasing behavior and sales trends over time. The analysis can be used to support business decisions such as product promotions and inventory planning.
